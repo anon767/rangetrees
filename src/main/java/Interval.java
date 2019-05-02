@@ -16,4 +16,19 @@ class Interval {
         return String.format("low: %d high: %d", this.low, this.high);
     }
 
+    @Override
+    public boolean equals(Object i) {
+        if (i == null) {
+            return false;
+        }
+        if (this == i) {
+            return true;
+        }
+        return (i instanceof Interval) && (((Interval) i).low == this.low && ((Interval) i).high == this.high);
+    }
+
+    @Override
+    public int hashCode() {
+        return (this.high % 11 + this.low % 11) % 11;
+    }
 }

@@ -1,6 +1,9 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import static org.junit.Assert.*;
 
 public class RangeTreeTest {
@@ -17,10 +20,8 @@ public class RangeTreeTest {
 
     @Test
     public void searchOverlapIn() {
-        Interval overlappingInterval;
-        overlappingInterval = rangetree.overlapsAt(new Interval(16, 19));
-        assertNotNull(overlappingInterval);
-        assertEquals(overlappingInterval.low, 15);
-        assertEquals(overlappingInterval.high, 20);
+        HashSet<Interval> overlappingInterval = (HashSet<Interval>) rangetree.overlapsAt(new Interval(16, 19));
+        assertFalse((overlappingInterval).isEmpty());
+        assertTrue(overlappingInterval.contains(new Interval(15, 20)));
     }
 }

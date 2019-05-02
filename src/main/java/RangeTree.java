@@ -1,3 +1,6 @@
+import java.util.Collection;
+import java.util.HashSet;
+
 class RangeTree {
     private Node root;
 
@@ -12,7 +15,7 @@ class RangeTree {
         this.root = insert(this.root, i);
     }
 
-    Interval overlapsAt(Interval i) {
+    Collection<Interval> overlapsAt(Interval i) {
         return searchOverlapIn(this.root, i);
     }
 
@@ -28,20 +31,21 @@ class RangeTree {
      * @param i    to be checked interval
      * @return
      */
-    private static Interval searchOverlapIn(Node root, Interval i) {
+    private static Collection<Interval> searchOverlapIn(Node root, Interval i) {
+        Collection<Interval> intervals = new HashSet<Interval>();
         if (null == root) {
-            return null;
+            return intervals;
         }
         if (root.getInterval().overlapsWith(i)) {
-            return root.getInterval();
+            intervals.add(root.getInterval());
         }
         if (root.getLeft() != null && root.getLeft().max >= i.low) {
-            return searchOverlapIn(root.getLeft(), i);
+            intervals.addAll(searchOverlapIn(root.getLeft(), i));
         }
         if (root.getRight() != null && root.getRight().max >= i.low) {
-            return searchOverlapIn(root.getRight(), i);
+            intervals.addAll(searchOverlapIn(root.getRight(), i));
         }
-        return null;
+        return intervals;
     }
 
     /**
@@ -49,8 +53,9 @@ class RangeTree {
      * First: if root is null return a new node
      * Second: if given integer low is lower than current root low recurse left else recurse right
      * Eventually adjust max values
-     * @param root
-     * @param i
+     *
+     * @param root current root node
+     * @param i    interval to be checked
      * @return
      */
     private static Node insert(Node root, Interval i) {
