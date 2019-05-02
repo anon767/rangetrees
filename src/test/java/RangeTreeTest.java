@@ -23,5 +23,7 @@ public class RangeTreeTest {
         HashSet<Interval> overlappingInterval = (HashSet<Interval>) rangetree.overlapsAt(new Interval(16, 19));
         assertFalse((overlappingInterval).isEmpty());
         assertTrue(overlappingInterval.contains(new Interval(15, 20)));
+        assertTrue(overlappingInterval.contains(new Interval(17, 19)));
+        assertTrue(overlappingInterval.contains(new Interval(10, 30)));
     }
 }
