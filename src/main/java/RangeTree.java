@@ -1,5 +1,6 @@
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Stack;
 
 class RangeTree {
     private Node root;
@@ -33,18 +34,22 @@ class RangeTree {
      */
     private static Collection<Interval> searchOverlapIn(Node root, Interval i) {
         Collection<Interval> intervals = new HashSet<Interval>();
-        if (null == root) {
-            return intervals;
+        Stack<Node> q = new Stack<>();
+        q.add(root);
+        while (!q.empty()) {
+            Node tmp = q.pop();
+            if (tmp.getInterval().overlapsWith(i)) {
+                intervals.add(tmp.getInterval());
+            }
+            if (tmp.getLeft() != null && tmp.getLeft().max >= i.low) {
+                q.add(tmp.getLeft());
+            }
+            if (tmp.getRight() != null && tmp.getRight().max >= i.low) {
+                q.add(tmp.getRight());
+            }
+
         }
-        if (root.getInterval().overlapsWith(i)) {
-            intervals.add(root.getInterval());
-        }
-        if (root.getLeft() != null && root.getLeft().max >= i.low) {
-            intervals.addAll(searchOverlapIn(root.getLeft(), i));
-        }
-        if (root.getRight() != null && root.getRight().max >= i.low) {
-            intervals.addAll(searchOverlapIn(root.getRight(), i));
-        }
+
         return intervals;
     }
 
