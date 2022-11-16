@@ -1,3 +1,3 @@
 # Range tree
 
-simple recursive range tree/interval tree
+simple iterative range tree/interval tree
